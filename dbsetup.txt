@@ -1,0 +1,56 @@
+Table Earthquakes {
+  Id INT [pk, increment] // Khóa chính, tự động tăng
+  feature_id VARCHAR(255) // ID đặc trưng của sự kiện động đất
+  magnitude DECIMAL(4, 2) // Độ lớn của động đất
+  occur_time TIMESTAMP // Thời gian xảy ra động đất
+  update_time TIMESTAMP // Thời gian cập nhật thông tin
+  url VARCHAR(255) // URL thông tin động đất
+  detail_url VARCHAR(255) // URL chi tiết dạng GeoJSON
+  status VARCHAR(50) // Trạng thái của báo cáo
+  tsunami INT // Cho biết có sóng thần hay không
+  sig INT // Điểm số động đất
+  net VARCHAR(20) // Mạng lưới ghi nhận
+  code VARCHAR(20) // Mã động đất
+  nst INT // Số trạm ghi nhận
+  dmin DECIMAL(7, 4) // Khoảng cách tới trạm gần nhất
+  rms DECIMAL(3, 2) // Root Mean Square của dữ liệu
+  gap DECIMAL(5, 2) // Khoảng cách góc tới trạm gần nhất
+  magType VARCHAR(10) // Loại độ lớn động đất
+  earthquake_type VARCHAR(50) // Loại sự kiện
+}
+
+Table Coordinates {
+  Id INT [pk, increment] // Khóa chính, tự động tăng
+  EarthquakeId INT [ref: > Earthquakes.Id] // Khóa ngoại tham chiếu đến Earthquakes
+  longitude FLOAT
+  latitude FLOAT
+  depth DECIMAL(6, 2)
+  place VARCHAR(255)
+}
+
+Table Associated_events {
+  Id INT [pk, increment] // Khóa chính, tự động tăng
+  EarthquakeId INT [ref: > Earthquakes.Id] // ID sự kiện động đất này
+  AssociatedEarthquakeId INT [ref: > Earthquakes.Id] // ID sự kiện động đất liên quan
+}
+
+Table Feature_types {
+  Id INT [pk, increment] // Khóa chính, tự động tăng
+  EarthquakeId INT [ref: > Earthquakes.Id] // Khóa ngoại tham chiếu đến Earthquakes
+  feature_product_type VARCHAR(255)
+}
+
+Table FeltReports {
+  Id INT [pk, increment] // Khóa chính, tự động tăng
+  EarthquakeId INT [ref: > Earthquakes.Id] // Khóa ngoại tham chiếu đến Earthquakes
+  felt INT
+  cdi DECIMAL(2, 1)
+  mmi DECIMAL(2, 1)
+  alert VARCHAR(50)
+}
+
+Table EventTypes {
+  Id INT [pk, increment] // Khóa chính, tự động tăng
+  EarthquakeId INT [ref: > Earthquakes.Id] // Khóa ngoại tham chiếu đến Earthquakes
+  types VARCHAR(255)
+}
